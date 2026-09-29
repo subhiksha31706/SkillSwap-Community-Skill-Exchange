@@ -284,38 +284,6 @@ Displays:
 
 ---
 
-## 📸 Screenshots
-
-Add your project screenshots here after uploading them to GitHub.
-
-Example:
-
-```markdown
-## 📸 Screenshots
-
-### Dashboard
-![SkillSwap Dashboard](screenshots/dashboard.png)
-
-### Skill Discovery
-![Skill Discovery](screenshots/discovery.png)
-
-### Goals & Analytics
-![Goals and Analytics](screenshots/analytics.png)
-```
-
-Recommended screenshot folder:
-
-```text
-screenshots/
-├── dashboard.png
-├── profile.png
-├── discovery.png
-├── goals.png
-└── analytics.png
-```
-
----
-
 ## 🔐 Privacy & Data
 
 This version of SkillSwap stores application data locally in the user's browser.
