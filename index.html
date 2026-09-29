@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillSwap - Community Skill Exchange & Learning Network</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="brand">
+                <i class="fa-solid fa-people-arrows brand-icon"></i>
+                <h2>SkillSwap</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="#dashboard" class="nav-link active" data-target="dashboard">
+                    <i class="fa-solid fa-chart-line"></i> Dashboard
+                </a>
+                <a href="#profile" class="nav-link" data-target="profile">
+                    <i class="fa-solid fa-id-card"></i> My Profile & Skills
+                </a>
+                <a href="#discovery" class="nav-link" data-target="discovery">
+                    <i class="fa-solid fa-magnifying-glass-location"></i> Skill Discovery & Match
+                </a>
+                <a href="#goals" class="nav-link" data-target="goals">
+                    <i class="fa-solid fa-bullseye"></i> Learning Goals
+                </a>
+                <a href="#activities" class="nav-link" data-target="activities">
+                    <i class="fa-solid fa-clock-rotate-left"></i> Activity Tracker
+                </a>
+                <a href="#analytics" class="nav-link" data-target="analytics">
+                    <i class="fa-solid fa-chart-pie"></i> Analytics & Insights
+                </a>
+                <a href="#achievements" class="nav-link" data-target="achievements">
+                    <i class="fa-solid fa-trophy"></i> Badges & Streaks
+                </a>
+                <a href="#export" class="nav-link" data-target="export">
+                    <i class="fa-solid fa-file-export"></i> Data & Export
+                </a>
+            </nav>
+
+            <div class="user-mini-card">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="User Avatar" id="sidebarAvatar" class="avatar">
+                <div class="user-info">
+                    <h4 id="sidebarUserName">Alex Morgan</h4>
+                    <span id="sidebarUserRole">Computer Science Student</span>
+                </div>
+            </div>
+        </aside>
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="page-title">
+                    <h1 id="currentSectionTitle">Dashboard Overview</h1>
+                    <p id="currentSectionSubtitle">Welcome back! Here is your learning activity & skill match summary.</p>
+                </div>
+                <div class="top-actions">
+                    <span class="streak-badge"><i class="fa-solid fa-fire"></i> <span id="userStreakDays">5</span> Day Streak</span>
+                    <button class="btn btn-primary" onclick="openModal('addActivityModal')"><i class="fa-solid fa-plus"></i> Log Activity</button>
+                </div>
+            </header>
+            <section id="section-dashboard" class="content-section active">
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon bg-blue"><i class="fa-solid fa-chalkboard-user"></i></div>
+                        <div class="stat-data">
+                            <h3 id="statSkillsOffered">3</h3>
+                            <p>Skills Offered</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon bg-green"><i class="fa-solid fa-book-open"></i></div>
+                        <div class="stat-data">
+                            <h3 id="statSkillsLearning">4</h3>
+                            <p>Skills Learning</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon bg-purple"><i class="fa-solid fa-handshake"></i></div>
+                        <div class="stat-data">
+                            <h3 id="statMatchesFound">6</h3>
+                            <p>Partner Matches</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon bg-amber"><i class="fa-solid fa-check-double"></i></div>
+                        <div class="stat-data">
+                            <h3 id="statGoalsCompleted">80%</h3>
+                            <p>Goal Completion</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-columns">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-wand-magic-sparkles"></i> Recommended Skill Partners</h3>
+                            <a href="#" onclick="navigateTo('discovery')" class="link-btn">View All</a>
+                        </div>
+                        <div id="dashMatchesList" class="matches-list">
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-list-check"></i> Active Learning Goals</h3>
+                            <a href="#" onclick="navigateTo('goals')" class="link-btn">Manage</a>
+                        </div>
+                        <div id="dashGoalsList" class="mini-goals-list">
+                        </div>
+
+                        <div class="card-header margin-top-lg">
+                            <h3><i class="fa-solid fa-clock-rotate-left"></i> Recent Activity Log</h3>
+                        </div>
+                        <div id="dashActivityList" class="mini-activity-list">
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="section-profile" class="content-section">
+                <div class="profile-grid">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-user-gear"></i> Personal & Academic Details</h3>
+                        </div>
+                        <form id="profileForm" onsubmit="saveProfile(event)">
+                            <div class="form-group">
+                                <label for="profileName">Full Name</label>
+                                <input type="text" id="profileName" required>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="profileRole">Role / Occupation</label>
+                                    <input type="text" id="profileRole" placeholder="e.g. Student / Designer" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profileInstitution">Institution / Organization</label>
+                                    <input type="text" id="profileInstitution" placeholder="e.g. KL University">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="profileBio">Bio & Learning Interests</label>
+                                <textarea id="profileBio" rows="3" placeholder="Describe your background and what skills you want to exchange..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="profileAvatar">Avatar Image URL</label>
+                                <input type="url" id="profileAvatar" placeholder="https://...">
+                            </div>
+                            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Save Profile</button>
+                        </form>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-layer-group"></i> My Skill Inventory</h3>
+                            <button class="btn btn-sm btn-secondary" onclick="openModal('addSkillModal')"><i class="fa-solid fa-plus"></i> Add Skill</button>
+                        </div>
+                        
+                        <div class="skills-tab-header">
+                            <span class="tab-btn active" onclick="switchSkillTab('offer', this)">Skills I Can Teach (<span id="teachCount">0</span>)</span>
+                            <span class="tab-btn" onclick="switchSkillTab('learn', this)">Skills I Want to Learn (<span id="learnCount">0</span>)</span>
+                        </div>
+
+                        <div id="skillsListContainer" class="skills-list">
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="section-discovery" class="content-section">
+                <div class="filter-bar">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="searchKeyword" placeholder="Search by skill name (e.g. Python, Graphic Design)..." onkeyup="filterDiscovery()">
+                    </div>
+                    <div class="filter-group">
+                        <select id="categoryFilter" onchange="filterDiscovery()">
+                            <option value="ALL">All Categories</option>
+                            <option value="Programming">Programming & Tech</option>
+                            <option value="Design">Design & Multimedia</option>
+                            <option value="Business">Business & Marketing</option>
+                            <option value="Communication">Communication & Soft Skills</option>
+                            <option value="Photography">Photography & Video</option>
+                        </select>
+                        <select id="matchFilter" onchange="filterDiscovery()">
+                            <option value="ALL">All Members</option>
+                            <option value="HIGH_MATCH">High Match (>70%)</option>
+                            <option value="MUTUAL">Mutual Skill Exchange</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="discoveryGrid" class="discovery-grid">
+                </div>
+            </section>
+            <section id="section-goals" class="content-section">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-bullseye"></i> Learning Goals Tracker</h3>
+                        <button class="btn btn-primary" onclick="openModal('addGoalModal')"><i class="fa-solid fa-plus"></i> New Goal</button>
+                    </div>
+
+                    <div id="goalsContainer" class="goals-grid">
+                    </div>
+                </div>
+            </section>
+
+            <section id="section-activities" class="content-section">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-list-check"></i> Knowledge Sharing Session History</h3>
+                        <button class="btn btn-primary" onclick="openModal('addActivityModal')"><i class="fa-solid fa-plus"></i> Log New Session</button>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Session Title</th>
+                                    <th>Partner</th>
+                                    <th>Skill Exchanged</th>
+                                    <th>Duration</th>
+                                    <th>Notes</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="activityTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            <section id="section-analytics" class="content-section">
+                <div class="analytics-grid">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-chart-column"></i> Category Breakdown</h3>
+                        </div>
+                        <div id="categoryBreakdownList" class="category-bars">
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-heart-pulse"></i> Consistency & Growth Metrics</h3>
+                        </div>
+                        <div class="metrics-container">
+                            <div class="metric-box">
+                                <h4>Learning Streak</h4>
+                                <p id="metricStreak">5 Days</p>
+                                <span>Active Engagement</span>
+                            </div>
+                            <div class="metric-box">
+                                <h4>Total Hours Spent</h4>
+                                <p id="metricTotalHours">14.5 hrs</p>
+                                <span>Knowledge Exchanged</span>
+                            </div>
+                            <div class="metric-box">
+                                <h4>Skill Mastery Score</h4>
+                                <p id="metricMasteryScore">78 / 100</p>
+                                <span>Based on sessions & goals</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="section-achievements" class="content-section">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-award"></i> Badges & Community Milestones</h3>
+                    </div>
+                    <div id="badgesGrid" class="badges-grid">
+                    </div>
+                </div>
+            </section>
+            <section id="section-export" class="content-section">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-database"></i> LocalStorage Data & Export Records</h3>
+                    </div>
+                    <p class="export-desc">All your user data, skill records, goals, and history are preserved in browser LocalStorage. You can export your full data records for external documentation or backup.</p>
+                    
+                    <div class="export-actions">
+                        <button class="btn btn-primary" onclick="exportDataJSON()"><i class="fa-solid fa-file-code"></i> Export JSON Data</button>
+                        <button class="btn btn-secondary" onclick="exportReportText()"><i class="fa-solid fa-file-lines"></i> Generate Summary Report (.txt)</button>
+                        <button class="btn btn-danger" onclick="resetToDefaultData()"><i class="fa-solid fa-arrow-rotate-left"></i> Reset to Sample Data</button>
+                    </div>
+
+                    <div class="form-group margin-top-lg">
+                        <label for="jsonRawOutput">Raw LocalStorage Data Snapshot</label>
+                        <textarea id="jsonRawOutput" rows="8" readonly></textarea>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+    <div id="addSkillModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Skill</h3>
+                <span class="close-btn" onclick="closeModal('addSkillModal')">&times;</span>
+            </div>
+            <form onsubmit="addSkillSubmit(event)">
+                <div class="form-group">
+                    <label>Skill Type</label>
+                    <select id="skillType">
+                        <option value="teach">Skill I Can Teach (Offer)</option>
+                        <option value="learn">Skill I Want to Learn (Need)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Skill Name</label>
+                    <input type="text" id="skillName" placeholder="e.g. Python Programming, Video Editing" required>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="skillCategory">
+                        <option value="Programming">Programming & Tech</option>
+                        <option value="Design">Design & Multimedia</option>
+                        <option value="Business">Business & Marketing</option>
+                        <option value="Communication">Communication & Soft Skills</option>
+                        <option value="Photography">Photography & Video</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Proficiency / Experience Level</label>
+                    <select id="skillLevel">
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                        <option value="Expert">Expert</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary full-width">Add Skill to Inventory</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="addGoalModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create Learning Goal</h3>
+                <span class="close-btn" onclick="closeModal('addGoalModal')">&times;</span>
+            </div>
+            <form onsubmit="addGoalSubmit(event)">
+                <div class="form-group">
+                    <label>Goal Title</label>
+                    <input type="text" id="goalTitle" placeholder="e.g. Master CSS Grid & Flexbox" required>
+                </div>
+                <div class="form-group">
+                    <label>Target Completion Date</label>
+                    <input type="date" id="goalDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="goalCategory">
+                        <option value="Programming">Programming & Tech</option>
+                        <option value="Design">Design & Multimedia</option>
+                        <option value="Business">Business & Marketing</option>
+                        <option value="Communication">Communication & Soft Skills</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary full-width">Create Goal</button>
+            </form>
+        </div>
+    </div>
+    <div id="addActivityModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Log Knowledge Sharing Session</h3>
+                <span class="close-btn" onclick="closeModal('addActivityModal')">&times;</span>
+            </div>
+            <form onsubmit="addActivitySubmit(event)">
+                <div class="form-group">
+                    <label>Session Title</label>
+                    <input type="text" id="actTitle" placeholder="e.g. Python Basics Pair Programming" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Learning Partner Name</label>
+                        <input type="text" id="actPartner" placeholder="e.g. Rahul Sharma" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Skill Exchanged</label>
+                        <input type="text" id="actSkill" placeholder="e.g. Python" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Duration (Hours)</label>
+                        <input type="number" id="actDuration" step="0.5" value="1.5" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" id="actDate" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Notes / Takeaways</label>
+                    <textarea id="actNotes" rows="2" placeholder="Key topics covered during the session..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary full-width">Log Session</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
